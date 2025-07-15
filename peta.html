@@ -8,38 +8,18 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-    <header class="main-header">
-        <img src="assets/img/Lambang_Kota_Salatiga.png" alt="Logo Kota Salatiga" class="logo">
-        <div class="header-text">
-            <h1>Peta Wilayah Interaktif</h1>
-            <p>Jelajahi batas wilayah dan lokasi penting di Kelurahan Gendongan.</p>
-        </div>
-    </header>
-
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="index.html" class="nav-link">Beranda</a>
-            <a href="infografis.html" class="nav-link">Infografis</a>
-            <a href="peta.html" class="nav-link active">Peta Wilayah</a>
-        </div>
-    </nav>
+    <div id="header-placeholder"></div>
+    <div id="navbar-placeholder"></div>
 
     <main class="main-container">
         <section class="content-card">
             <h2>Peta Detail Wilayah</h2>
             <p>Gunakan kontrol di pojok kanan atas peta untuk menampilkan atau menyembunyikan batas wilayah RW dan lokasi penting lainnya.</p>
-            <div id="peta-detail" style="height: 600px; width:100%; border-radius:12px;"></div>
+            <div id="peta-detail"></div>
         </section>
     </main>
 
-    <footer class="main-footer">
-        <h3>Kontak Kantor Kelurahan Gendongan</h3>
-        <address>
-            Jalan Dr. Muwardi No. 09, Salatiga<br>
-            Kode Pos: 50743 | Telepon: (0298) 321213
-        </address>
-        <p>&copy; 2025 Website KKN Kelurahan Gendongan. All Rights Reserved.</p>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="assets/js/app.js"></script>

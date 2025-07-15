@@ -146,6 +146,7 @@ main {
     width: 100%;
 }
 
+/* 8. Footer (REVISI FINAL: Tata Letak 2 Kolom Konsisten) */
 .main-footer {
     background-color: #2f3640;
     color: #ced6e0;
@@ -156,7 +157,8 @@ main {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    gap: 50px;
+    gap: 40px;
+    /* Default 1 kolom untuk mobile */
     grid-template-columns: 1fr;
 }
 .footer-column h4 {
@@ -189,6 +191,12 @@ address, .footer-contact-item {
     border-top: 1px solid #495057;
     font-size: 0.9rem;
     color: #7f8c8d;
+}
+
+@media (min-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr 2fr;
+    }
 }
 
 @media (min-width: 768px) {
