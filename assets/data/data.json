@@ -1,0 +1,26 @@
+{
+  "dataKunci": {
+    "jumlahPenduduk": 5261,
+    "jumlahRT": 38,
+    "jumlahRW": 5,
+    "luasWilayah": "0.58 km²"
+  },
+  "infografis": {
+    "jenisKelamin": {
+      "pria": 2560,
+      "wanita": 2701
+    },
+    "kelompokUsia": {
+      "labels": ["0-14", "15-29", "30-49", "50-64", "65+"],
+      "data": [1200, 1550, 1350, 810, 300]
+    },
+    "pendidikan": {
+      "labels": ["SD", "SMP", "SMA/SMK", "Diploma", "Sarjana"],
+      "data": [1300, 1500, 1800, 400, 210]
+    },
+    "pekerjaan": {
+      "labels": ["Wiraswasta", "Karyawan Swasta", "PNS/TNI/Polri", "Petani", "Lainnya"],
+      "data": [1600, 1950, 450, 150, 1060]
+    }
+  }
+}
