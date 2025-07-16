@@ -3,18 +3,25 @@ document.addEventListener("DOMContentLoaded", function() {
     const loadComponent = async (selector, filePath) => {
         try {
             const response = await fetch(filePath);
-            if (!response.ok) throw new Error(`Gagal memuat ${filePath}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, path: ${filePath}`);
+            }
             const data = await response.text();
             const element = document.querySelector(selector);
-            if (element) element.innerHTML = data;
+            if (element) {
+                element.innerHTML = data;
+            } else {
+                console.error(`Elemen dengan selector '${selector}' tidak ditemukan.`);
+            }
         } catch (error) {
-            console.error('Error memuat komponen:', error);
+            console.error(`Gagal memuat komponen dari '${filePath}'.`, error);
         }
     };
 
     const setActiveNavLink = () => {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.main-nav .nav-link').forEach(link => {
+        const navLinks = document.querySelectorAll('.header-nav .nav-link');
+        navLinks.forEach(link => {
             if (link.getAttribute('href') === currentPage) {
                 link.classList.add('active');
             }
@@ -22,11 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     const initializeLayout = async () => {
-        await Promise.all([
-            loadComponent('#header-placeholder', 'assets/components/header.html'),
-            loadComponent('#navbar-placeholder', 'assets/components/navbar.html'),
-            loadComponent('#footer-placeholder', 'assets/components/footer.html')
-        ]);
+        await loadComponent('#header-placeholder', 'assets/components/header.html');
+        await loadComponent('#footer-placeholder', 'assets/components/footer.html');
         
         setActiveNavLink();
     };
