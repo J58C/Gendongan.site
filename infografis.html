@@ -14,32 +14,49 @@
     <div id="header-placeholder"></div>
 
     <main class="main-container">
-        <div class="chart-grid">
-            <div class="content-card">
-                <h3>Populasi Berdasarkan Jenis Kelamin</h3>
-                <div class="chart-container">
-                    <canvas id="grafikJenisKelamin"></canvas>
+        <section class="content-card">
+            <h2>Data Demografi Kunci</h2>
+            <div class="data-kunci-grid">
+                <div class="data-item">
+                    <span class="data-angka" id="data-kepadatan">...</span>
+                    <span class="data-label">Kepadatan Penduduk / km²</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-angka" id="data-rasio-jk">...</span>
+                    <span class="data-label">Rasio Jenis Kelamin</span>
                 </div>
             </div>
-            <div class="content-card">
-                <h3>Populasi Berdasarkan Kelompok Usia</h3>
-                <div class="chart-container">
-                    <canvas id="grafikKelompokUsia"></canvas>
+        </section>
+
+        <section class="content-card">
+            <h2>Visualisasi Data</h2>
+            <div class="chart-grid">
+                <div class="content-card">
+                    <h3>Komposisi Gender</h3>
+                    <div class="chart-container">
+                        <canvas id="grafikJenisKelamin"></canvas>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3>Sebaran Pemeluk Agama</h3>
+                    <div class="chart-container">
+                        <canvas id="grafikPemelukAgama"></canvas>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3>Jumlah Tempat Ibadah</h3>
+                    <div class="chart-container">
+                        <canvas id="grafikTempatIbadah"></canvas>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3>Jumlah Posyandu</h3>
+                    <div class="chart-container">
+                        <canvas id="grafikPosyandu"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="content-card">
-                <h3>Tingkat Pendidikan Terakhir</h3>
-                <div class="chart-container">
-                    <canvas id="grafikPendidikan"></canvas>
-                </div>
-            </div>
-            <div class="content-card">
-                <h3>Sebaran Jenis Pekerjaan</h3>
-                <div class="chart-container">
-                    <canvas id="grafikPekerjaan"></canvas>
-                </div>
-            </div>
-        </div>
+        </section>
     </main>
     
     <div id="footer-placeholder"></div>
@@ -47,6 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/infografis.js"></script>
-    <script src="assets/js/preloader.js"></script> </body>
+    <script src="assets/js/preloader.js"></script>
 </body>
 </html>

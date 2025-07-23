@@ -1,56 +1,69 @@
-function initializeCharts() {
-    const chartData = {
-        jenisKelamin: { labels: ['Pria', 'Wanita'], data: [6120, 6225] },
-        kelompokUsia: { labels: ['0-17 th', '18-35 th', '36-55 th', '55+ th'], data: [2500, 4500, 3845, 1500] },
-        pendidikan: { labels: ['SD', 'SMP', 'SMA/SMK', 'Diploma', 'Sarjana', 'Lainnya'], data: [2000, 3100, 4500, 1500, 1245, 100] },
-        pekerjaan: { labels: ['Swasta', 'Wirausaha', 'PNS/TNI/Polri', 'Pelajar', 'Lainnya'], data: [5200, 2500, 800, 2845, 1000] }
-    };
-    const createChart = (canvasId, chartType, data, extraOptions = {}) => {
+document.addEventListener('DOMContentLoaded', () => {
+    const createChart = (canvasId, chartType, data, options = {}) => {
         const ctx = document.getElementById(canvasId);
-        if (!ctx) {
-            console.error(`Elemen canvas dengan id '${canvasId}' tidak ditemukan.`);
-            return;
-        }
-        new Chart(ctx, {
-            type: chartType,
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                },
-                ...extraOptions
-            }
-        });
+        if (!ctx) return;
+        new Chart(ctx, { type: chartType, data: data, options: { responsive: true, maintainAspectRatio: false, ...options } });
     };
 
-    createChart('grafikJenisKelamin', 'pie', {
-        labels: chartData.jenisKelamin.labels,
-        datasets: [{ data: chartData.jenisKelamin.data, backgroundColor: ['#36A2EB', '#FF6384'] }]
-    });
+    function fetchData() {
+        fetch('assets/data/data.json')
+            .then(response => response.json())
+            .then(data => {
+                const demografi = data.demografi;
+                const fasilitas = data.fasilitasSosial;
 
-    createChart('grafikKelompokUsia', 'bar', {
-        labels: chartData.kelompokUsia.labels,
-        datasets: [{ label: 'Jumlah Penduduk', data: chartData.kelompokUsia.data, backgroundColor: '#4BC0C0' }]
-    });
+                document.getElementById('data-kepadatan').textContent = demografi.kepadatanPenduduk_per_km2.toLocaleString('id-ID');
+                document.getElementById('data-rasio-jk').textContent = demografi.rasioJenisKelamin.toLocaleString('id-ID');
 
-    createChart('grafikPendidikan', 'doughnut', {
-        labels: chartData.pendidikan.labels,
-        datasets: [{ data: chartData.pendidikan.data, backgroundColor: ['#17a2b8', '#6610f2', '#6f42c1', '#e83e8c', '#20c997', '#6c757d'] }]
-    });
+                createChart('grafikJenisKelamin', 'pie', {
+                    labels: ['Pria', 'Wanita'],
+                    datasets: [{ 
+                        label: 'Jumlah',
+                        data: [demografi.jumlahPria, demografi.jumlahWanita], 
+                        backgroundColor: ['#36A2EB', '#FF6384'] 
+                    }]
+                });
 
-    createChart('grafikPekerjaan', 'bar', {
-        labels: chartData.pekerjaan.labels,
-        datasets: [{ label: 'Jumlah', data: chartData.pekerjaan.data, backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff'] }]
-    }, { indexAxis: 'y' });
-}
+                createChart('grafikPemelukAgama', 'doughnut', {
+                    labels: ['Islam', 'Kristen', 'Katolik', 'Budha', 'Konghucu'],
+                    datasets: [{
+                        label: 'Jumlah Pemeluk',
+                        data: [
+                            demografi.pemelukAgama.islam,
+                            demografi.pemelukAgama.kristen,
+                            demografi.pemelukAgama.katolik,
+                            demografi.pemelukAgama.budha,
+                            demografi.pemelukAgama.konghucu
+                        ],
+                        backgroundColor: ['#4BC0C0', '#FF9F40', '#FF6384', '#9966FF', '#FFCD56']
+                    }]
+                });
 
-const waitForChartJs = setInterval(() => {
-    if (typeof Chart !== 'undefined') {
-        clearInterval(waitForChartJs);
-        initializeCharts();
+                createChart('grafikTempatIbadah', 'bar', {
+                    labels: ['Masjid', 'Mushola', 'Gereja'],
+                    datasets: [{ 
+                        label: 'Jumlah Unit',
+                        data: [fasilitas.tempatIbadah.masjid, fasilitas.tempatIbadah.mushola, fasilitas.tempatIbadah.gereja], 
+                        backgroundColor: ['#4BC0C0', '#9966FF', '#C9CBCF'] 
+                    }]
+                });
+
+                createChart('grafikPosyandu', 'bar', {
+                    labels: ['Posyandu Balita', 'Posyandu Lansia'],
+                    datasets: [{ 
+                        label: 'Jumlah Unit', 
+                        data: [fasilitas.posyandu.balita, fasilitas.posyandu.lansia], 
+                        backgroundColor: ['#36A2EB', '#FF6384'] 
+                    }],
+                }, { indexAxis: 'y' });
+            })
+            .catch(error => console.error("Gagal memuat data infografis:", error));
     }
-}, 100);
+    
+    const waitForChartJs = setInterval(() => {
+        if (typeof Chart !== 'undefined') {
+            clearInterval(waitForChartJs);
+            fetchData();
+        }
+    }, 100);
+});

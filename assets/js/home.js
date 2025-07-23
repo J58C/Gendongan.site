@@ -7,28 +7,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                const keyData = data.dataKunci;
+                const keyData = data.profilUtama;
                 if (keyData) {
-                    document.getElementById('data-penduduk').textContent = keyData.jumlahPenduduk.toLocaleString('id-ID');
+                    document.getElementById('data-penduduk').textContent = keyData.jumlahPenduduk_total.toLocaleString('id-ID');
                     document.getElementById('data-rw').textContent = keyData.jumlahRW;
                     document.getElementById('data-rt').textContent = keyData.jumlahRT;
-                    document.getElementById('data-luas').textContent = keyData.luasWilayah;
+                    document.getElementById('data-luas').textContent = `${keyData.luasWilayah_km2} km²`;
                 }
             })
-            .catch(error => {
-                console.error('Gagal memuat data kunci:', error);
-                const fields = ['data-penduduk', 'data-rw', 'data-rt', 'data-luas'];
-                fields.forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) el.textContent = "Error";
-                });
-            });
+            .catch(error => console.error('Gagal memuat data kunci:', error));
     }
 
     function initializeStaticMap() {
         const petaContainer = document.getElementById('peta-lokasi');
         if (!petaContainer) return;
+
         const map = L.map(petaContainer);
+
         map.dragging.disable();
         map.touchZoom.disable();
         map.doubleClickZoom.disable();
@@ -43,23 +38,25 @@ document.addEventListener('DOMContentLoaded', function() {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         }).addTo(map);
 
-        const styleGendongan = {
-            color: "#e60000",
-            weight: 3,
-            opacity: 1,
-            fillColor: "#e60000",
-            fillOpacity: 0.3
-        };
+        const styleGendongan = { color: "#e60000", weight: 3, opacity: 1, fillColor: "#e60000", fillOpacity: 0.3 };
+        const styleSekitar = { color: "#6c757d", weight: 2, opacity: 0.7, fillColor: "#6c757d", fillOpacity: 0.1 };
+        const styleHighlight = { color: "#007bff", weight: 3, opacity: 1, fillColor: "#007bff", fillOpacity: 0.3 };
+        
+        let previouslyClickedLayer = null;
+        let gendonganLayer = null;
 
-        const styleSekitar = {
-            color: "#6c757d",
-            weight: 2,
-            opacity: 0.7,
-            fillColor: "#6c757d",
-            fillOpacity: 0.1
-        };
-    
-        let gendonganLayer;
+        function resetMapFocus() {
+            if (previouslyClickedLayer) {
+                previouslyClickedLayer.setStyle(styleSekitar);
+                previouslyClickedLayer = null;
+            }
+            if (gendonganLayer) {
+                const bounds = gendonganLayer.getBounds();
+                const paddedBounds = bounds.pad(0.4);
+                map.fitBounds(paddedBounds);
+            }
+        }
+        
         fetch('assets/data/Salatiga.geojson')
             .then(response => response.json())
             .then(data => {
@@ -68,20 +65,41 @@ document.addEventListener('DOMContentLoaded', function() {
                     style: feature => feature.properties.OBJECTID === 0 ? styleGendongan : styleSekitar,
                     onEachFeature: (feature, layer) => {
                         const nama = feature.properties.NAMOBJ || 'Wilayah';
-                        layer.bindPopup(`<b>${nama}</b>`);
+                        
                         if (feature.properties.OBJECTID === 0) {
                             gendonganLayer = layer;
+                            layer.bindTooltip(nama, {
+                                permanent: true,
+                                direction: 'center',
+                                className: 'map-label-center'
+                            }).openTooltip();
+                        } else {
+                            layer.bindPopup(`<b>${nama}</b>`);
+                            layer.on('click', (e) => {
+                                if (previouslyClickedLayer) {
+                                    previouslyClickedLayer.setStyle(styleSekitar);
+                                }
+                                e.target.setStyle(styleHighlight);
+                                previouslyClickedLayer = e.target;
+                            });
+                            layer.on('popupclose', resetMapFocus);
                         }
                     }
                 }).addTo(map);
+
+                map.on('click', resetMapFocus);
+
                 if (gendonganLayer) {
-                    map.fitBounds(gendonganLayer.getBounds(), { padding: [50, 50] });
+                    const bounds = gendonganLayer.getBounds();
+                    const paddedBounds = bounds.pad(0.4);
+                    map.fitBounds(paddedBounds);
                 } else {
                     map.fitBounds(allKelurahan.getBounds());
                 }
             })
             .catch(error => console.error('Gagal memuat Salatiga.geojson:', error));
     }
+
     updateKeyData();
     initializeStaticMap();
 });

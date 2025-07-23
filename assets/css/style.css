@@ -8,7 +8,7 @@
     --text-color: #212529;
     --text-color-light: #ced6e0;
     --border-color: #dee2e6;
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 body {
@@ -73,9 +73,10 @@ main {
 }
 
 .main-container {
-    max-width: 1100px;
+    width: 90%;
+    max-width: 1200px;
     margin: 30px auto;
-    padding: 0 20px;
+    padding: 0;
 }
 .content-card {
     background-color: var(--light-surface);
@@ -89,6 +90,11 @@ main {
     margin-top: 0;
     font-weight: 700;
     color: #2c3e50;
+}
+.content-card h2 {
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
 }
 
 .data-kunci-grid {
@@ -115,7 +121,7 @@ main {
     color: #6c757d;
 }
 
-#peta-lokasi { height: 100%; min-height: 300px; }
+#peta-lokasi { height: 100%; min-height: 220px; }
 #peta-detail { height: 400px; }
 #peta-lokasi, #peta-detail {
     width: 100%;
@@ -130,12 +136,15 @@ main {
     align-items: stretch;
 }
 .info-grid > .content-card {
-    margin-bottom: 0;
+    margin-bottom: 0; 
     display: flex;
     flex-direction: column;
 }
 .info-grid > .content-card > #peta-lokasi {
     flex-grow: 1;
+}
+.info-grid .content-card p {
+    text-align: justify;
 }
 
 .chart-grid {
@@ -149,6 +158,25 @@ main {
     width: 100%;
 }
 
+.map-label {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+}
+.map-label span {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .main-footer {
     background-color: #2f3640;
     color: #ced6e0;
@@ -156,14 +184,12 @@ main {
     margin-top: 40px;
     text-align: center;
 }
-
 .footer-top {
     margin-bottom: 30px;
 }
 .footer-logo {
     height: 60px;
 }
-
 .footer-content {
     max-width: 900px;
     margin: 0 auto 30px auto;
@@ -174,7 +200,6 @@ main {
     padding-bottom: 30px;
     border-bottom: 1px solid #495057;
 }
-
 .footer-column h4 {
     color: white;
     font-weight: 600;
@@ -187,7 +212,6 @@ main {
     font-size: 0.95rem;
     line-height: 1.8;
 }
-
 .footer-bottom {
     font-size: 0.9rem;
     color: #7f8c8d;
@@ -196,12 +220,7 @@ main {
     margin: 0;
 }
 
-@media (min-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
+/* --- ATURAN RESPONSIVE TERPUSAT --- */
 @media (max-width: 991px) {
     .main-header, .header-container {
         flex-direction: column;
@@ -210,11 +229,13 @@ main {
         padding: 10px;
     }
 }
+
 @media (min-width: 768px) {
     .footer-content {
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 1fr 1fr;
     }
 }
+
 @media (min-width: 992px) {
     .chart-grid {
         grid-template-columns: 1fr 1fr;
