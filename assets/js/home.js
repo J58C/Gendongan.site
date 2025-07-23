@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('assets/data/Salatiga.geojson')
             .then(response => response.json())
             .then(data => {
+                let gendonganLayer;
                 const allKelurahan = L.geoJSON(data, {
                     filter: feature => feature.properties.LAYER === 'Kelurahan',
                     style: feature => feature.properties.OBJECTID === 0 ? styleGendongan : styleSekitar,

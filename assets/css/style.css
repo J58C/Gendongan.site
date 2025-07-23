@@ -121,7 +121,7 @@ main {
     color: #6c757d;
 }
 
-#peta-lokasi { height: 100%; min-height: 220px; }
+#peta-lokasi { height: 100%; min-height: 220px;}
 #peta-detail { height: 400px; }
 #peta-lokasi, #peta-detail {
     width: 100%;
@@ -220,7 +220,6 @@ main {
     margin: 0;
 }
 
-/* --- ATURAN RESPONSIVE TERPUSAT --- */
 @media (max-width: 991px) {
     .main-header, .header-container {
         flex-direction: column;
